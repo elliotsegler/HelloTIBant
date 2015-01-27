@@ -16,8 +16,8 @@
                 <ivy pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
             </url>
             <url name="releases" m2compatible="true">
-                <artifact pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
-                <ivy pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+                <artifact pattern="${demo.repo.basepath}/demo-releases/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+                <ivy pattern="${demo.repo.basepath}/demo-releases/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
             </url>
         </chain>
     </resolvers>
