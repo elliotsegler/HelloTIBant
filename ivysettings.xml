@@ -2,7 +2,7 @@
 <ivysettings>
     <include file="${basedir}/${bwda.importer.dir}/ivysettings.xml"/>
     <credentials host="repo.windyroad.com.au" realm="Artifactory Realm"
-        username="${wr.repo.username}" passwd="${wr.repo.password}" />
+        username="${demo.repo.username}" passwd="${demo.repo.password}" />
 
     <resolvers>
         <chain name="shared">
