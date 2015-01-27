@@ -2,6 +2,8 @@
 <ivysettings>
     <property name="demo.repo.host" value="repo.windyroad.com.au" />
     <property name="demo.repo.basepath" value="http://${demo.repo.host}/windyroad" />
+    <property name="demo.repo.username" value="${wr.repo.username}" />
+    <property name="demo.repo.password" value="${wr.repo.password}" />
 
     <include file="${basedir}/${bwda.importer.dir}/ivysettings.xml"/>
     <credentials host="repo.windyroad.com.au" realm="Artifactory Realm"
