@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivysettings>
+    <include file="${basedir}/${bwda.importer.dir}/ivysettings.xml"/>
+    <credentials host="repo.windyroad.com.au" realm="Artifactory Realm"
+        username="${wr.repo.username}" passwd="${wr.repo.password}" />
+
+    <resolvers>
+        <chain name="shared">
+            <url name="snapshots" m2compatible="true">
+                <artifact pattern="http://repo.windyroad.com.au/windyroad/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+                <ivy pattern="http://repo.windyroad.com.au/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+            </url>
+            <url name="releases" m2compatible="true">
+                <artifact pattern="http://repo.windyroad.com.au/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+                <ivy pattern="http://repo.windyroad.com.au/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+            </url>
+        </chain>
+    </resolvers>
+    <include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml"/>
+    <resolvers>
+        <chain name="default.${bwda.ivy.settings.id}" returnFirst="true">
+            <resolver ref="local"/>
+            <resolver ref="main"/>
+        </chain>
+    </resolvers>
+    <modules>
+        <module organisation="${ivy.organisation}" name="*" resolver="shared"/>
+    </modules>
+</ivysettings>
