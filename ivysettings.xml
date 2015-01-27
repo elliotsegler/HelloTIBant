@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ivysettings>
+    <property name="demo.repo.host" value="repo.windyroad.com.au" />
+    <property name="demo.repo.basepath" value="http://${demo.repo.host}/windyroad" />
+
     <include file="${basedir}/${bwda.importer.dir}/ivysettings.xml"/>
     <credentials host="repo.windyroad.com.au" realm="Artifactory Realm"
         username="${demo.repo.username}" passwd="${demo.repo.password}" />
@@ -7,12 +10,12 @@
     <resolvers>
         <chain name="shared">
             <url name="snapshots" m2compatible="true">
-                <artifact pattern="http://repo.windyroad.com.au/windyroad/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
-                <ivy pattern="http://repo.windyroad.com.au/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+                <artifact pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+                <ivy pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
             </url>
             <url name="releases" m2compatible="true">
-                <artifact pattern="http://repo.windyroad.com.au/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
-                <ivy pattern="http://repo.windyroad.com.au/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+                <artifact pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+                <ivy pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
             </url>
         </chain>
     </resolvers>
