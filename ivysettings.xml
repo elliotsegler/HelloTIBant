@@ -1,34 +1,77 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
 <ivysettings>
-    <property name="demo.repo.host" value="repo.windyroad.com.au" />
-    <property name="demo.repo.basepath" value="http://${demo.repo.host}/windyroad" />
-    <property name="demo.repo.username" value="${wr.repo.username}" />
-    <property name="demo.repo.password" value="${wr.repo.password}" />
 
-    <include file="${basedir}/${bwda.importer.dir}/ivysettings.xml"/>
-    <credentials host="repo.windyroad.com.au" realm="Artifactory Realm"
-        username="${demo.repo.username}" passwd="${demo.repo.password}" />
+	<!-- This allows a resolver chain with both the WindyRoad artifactory, and a Sonatype Nexus maven repo -->
+	<!-- Important notes:
+		*	you'll need to set the _Repository Policy_ on your snapshots repo to be "Release"
+			If you try to use Snapshots you'll have to augment the artifact pattern to have 
+			[artifact](-[classifier])-[revision]-SNAPSHOT.[ext] in it (which I never got to play nice)
+		*	you should also have both repo's credentials set in an appropriate build.properties filename
+		*	At the moment, I couldn't get ibiblio resolvers to work as there appears to be issues resolving the artifact patterns
+		*	The realms for credentials are important - they won't work if you change them ;)
+	-->
+	
+    <property name="maven_url" value="https://maven.example.com/nexus"/>
+    <property name="3rdparty" value="${maven_url}/content/repositories/3rdparty"/>
+    <property name="central" value="${maven_url}/content/repositories/central"/>
+    <property name="releases" value="${maven_url}/content/repositories/releases"/>
+    <property name="snapshots" value="${maven_url}/content/repositories/bw-snaps"/>
+	<property name="artifact.pattern" value="[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+	<property name="ivy.pattern" value="[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
 
+    <property name="wr.repo.basepath" value="http://windyroad.artifactoryonline.com/windyroad" />
+    <property name="wr.repo.artifact.pattern" value="[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+    <property name="wr.repo.ivy.pattern" value="[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+
+    <credentials host="maven.staff.iinet.net.au" realm="Sonatype Nexus Repository Manager" username="${maven.repo.username}" passwd="${maven.repo.password}"/>
+    <credentials host="windyroad.artifactoryonline.com" realm="Artifactory Realm" username="${wr.repo.username}" passwd="${wr.repo.password}" />
+
+    <settings defaultResolver="default" />
+    <caches lockStrategy="artifact-lock" defaultCacheDir="${ivy.default.ivy.user.dir}/cache"/>
     <resolvers>
         <chain name="shared">
-            <url name="snapshots" m2compatible="true">
-                <artifact pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
-                <ivy pattern="${demo.repo.basepath}/demo-snapshots/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+			<url name="snapshots" m2compatible="true">
+				<artifact pattern="${snapshots}/${artifact.pattern}" />
+				<ivy pattern="${snapshots}/${artifact.pattern}" />
+			</url>
+			<url name="releases" m2compatible="true">
+				<artifact pattern="${releases}/${artifact.pattern}" />
+				<ivy pattern="${releases}/${artifact.pattern}" />
+			</url>
+        </chain>
+    </resolvers>
+    <resolvers>
+        <chain name="windyroad" >
+            <url name="windyroad-licenses" m2compatible="false">
+                <artifact pattern="${wr.repo.basepath}/licenses/[organisation]/[module]/${bwunit.license.company}/${bwunit.license.department}/[revision]/[type]s/${bwunit.license.holder}-[artifact]-[revision].[ext]" />
+                <ivy pattern="${wr.repo.basepath}/licenses/[organisation]/[module]/${bwunit.license.company}/${bwunit.license.department}/[revision]/[type]s/${bwunit.license.holder}-[artifact]-[revision].[ext]" />
             </url>
-            <url name="releases" m2compatible="true">
-                <artifact pattern="${demo.repo.basepath}/demo-releases/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
-                <ivy pattern="${demo.repo.basepath}/demo-releases/[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
+            <url name="windyroad-artifacts" m2compatible="true">
+                <artifact pattern="${wr.repo.basepath}/repo/${wr.repo.artifact.pattern}" />
+                <ivy pattern="${wr.repo.basepath}/repo/${wr.repo.ivy.pattern}" />
             </url>
+        </chain>
+        <chain name="public" >
+            <ibiblio root="${central}" name="maven2" m2compatible="true"/>
+            <ibiblio name="maven2" m2compatible="true"/>
+            <resolver ref="windyroad"/>
+        </chain>
+    </resolvers>
+    <include url="${ivy.default.settings.dir}/ivysettings-local.xml"/>
+    <resolvers>
+        <chain name="default" returnFirst="true">
+            <resolver ref="local"/>
+            <resolver ref="public"/>
         </chain>
     </resolvers>
     <include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml"/>
     <resolvers>
-        <chain name="default.${bwda.ivy.settings.id}" returnFirst="true">
+        <chain name="default" returnFirst="true">
             <resolver ref="local"/>
-            <resolver ref="main"/>
+			<resolver ref="main"/>
         </chain>
     </resolvers>
     <modules>
-        <module organisation="${ivy.organisation}" name="*" resolver="shared"/>
+        <module organisation="org.windyroad" name="*" resolver="windyroad"/>
+        <module organisation="com.exmaple" name="*" resolver="shared"/>
     </modules>
 </ivysettings>
