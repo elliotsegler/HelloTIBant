@@ -22,7 +22,7 @@
     <property name="wr.repo.artifact.pattern" value="[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
     <property name="wr.repo.ivy.pattern" value="[organisation]/[module]/[revision]/[artifact](-[classifier])-[revision].[ext]" />
 
-    <credentials host="maven.staff.iinet.net.au" realm="Sonatype Nexus Repository Manager" username="${maven.repo.username}" passwd="${maven.repo.password}"/>
+    <credentials host="maven.example.com" realm="Sonatype Nexus Repository Manager" username="${maven.repo.username}" passwd="${maven.repo.password}"/>
     <credentials host="windyroad.artifactoryonline.com" realm="Artifactory Realm" username="${wr.repo.username}" passwd="${wr.repo.password}" />
 
     <settings defaultResolver="default" />
